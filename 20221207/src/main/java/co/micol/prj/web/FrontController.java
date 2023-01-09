@@ -14,17 +14,23 @@ import co.micol.prj.MainCommand;
 import co.micol.prj.common.Command;
 import co.micol.prj.member.command.AjaxMemberIdCheck;
 import co.micol.prj.member.command.MemberAddAjax;
+import co.micol.prj.member.command.MemberDelAjax;
 import co.micol.prj.member.command.MemberDelete;
 import co.micol.prj.member.command.MemberEdit;
+import co.micol.prj.member.command.MemberGetAjax;
 import co.micol.prj.member.command.MemberJoin;
 import co.micol.prj.member.command.MemberJoinForm;
 import co.micol.prj.member.command.MemberList;
+import co.micol.prj.member.command.MemberListAjax;
 import co.micol.prj.member.command.MemberListJquery;
 import co.micol.prj.member.command.MemberLogin;
 import co.micol.prj.member.command.MemberLoginForm;
 import co.micol.prj.member.command.MemberLogout;
 import co.micol.prj.member.command.MemberSelect;
 import co.micol.prj.member.command.MemberUpdate;
+import co.micol.prj.member.command.ProductList;
+import co.micol.prj.member.command.ProductListForm;
+import co.micol.prj.member.command.UpdateMemberAjax;
 import co.micol.prj.notice.command.NoticeInsert;
 import co.micol.prj.notice.command.NoticeInsertForm;
 import co.micol.prj.notice.command.NoticeList;
@@ -61,8 +67,14 @@ public class FrontController extends HttpServlet {
 		
 		//jquery연습용
 		map.put("/memberListJquery.do", new MemberListJquery());
-		map.put("/memberAddAjax.do", new MemberAddAjax());
+		map.put("/memberAddAjax.do", new MemberAddAjax());			//회원가입(맴버추가)
+		map.put("/memberListAjax.do", new MemberListAjax());		//멤버목록 가져오기 위함
+		map.put("/memberDelAjax.do", new MemberDelAjax());			//맴버목록에서 삭제하기
+		map.put("/memberGetAjax.do", new MemberGetAjax());			//한건조회
+		map.put("/updateMemberAjax.do", new UpdateMemberAjax()); 	//수정하기
 		
+		map.put("/productList.do", new ProductList());				//상품리스트
+		map.put("/productListForm.do", new ProductListForm());		//상품리스트 폼
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

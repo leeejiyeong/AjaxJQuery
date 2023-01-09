@@ -42,6 +42,9 @@ public class MemberLogin implements Command {
 		vo.setMemberPassword(password);
 		
 		vo = dao.memberSelect(vo);
+		
+		String path = "";
+		
 		if(vo != null) {
 			session.setAttribute("id", vo.getMemberId());
 			session.setAttribute("author", vo.getMemberAuthor());
@@ -50,11 +53,18 @@ public class MemberLogin implements Command {
 			message = vo.getMemberName() + "님 환영합니다.";
 			request.setAttribute("message", message);
 //			request.setAttribute("member", vo);
+			
+			if(vo.getMemberAuthor().equals("ADMIN")) {
+				path = "jquery/memberList.tiles";
+			}else {
+				path = "member/memberLogin.tiles";				
+			}
+			
 		}else {
 			message = "아이디 또는 패스워드가 틀립니다.";
 			request.setAttribute("message", message);
 		}
-		return "member/memberLogin.tiles";
+		return path;
 	}
 
 }

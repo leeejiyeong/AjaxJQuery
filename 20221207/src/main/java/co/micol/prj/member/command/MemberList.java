@@ -23,9 +23,9 @@ public class MemberList implements Command {
 		try {
 			AES256Util aes = new AES256Util();
 			members = dao.memberSelectList(); // db에서 멤버테이블의 목록을 가져온다.
-			for (MemberVO vo : members) {
-				System.out.println(vo.getMemberId() + "+" + aes.decrypt(vo.getMemberPassword()));
-			}
+			//for (MemberVO vo : members) {
+				//System.out.println(vo.getMemberId() + "+" + aes.decrypt(vo.getMemberPassword()));
+			//}
 			request.setAttribute("members", members); // 결과를 jsp페이지에 전달하기 위해
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -27,7 +27,7 @@
 			<if test="memberName != null">MEMBER_NAME = #{memberName},</if>
 			<if test="memberPassword != null">MEMBER_PASSWORD = #{memberPassword},</if>
 			<if test="memberAddress != null">MEMBER_ADDRESS = #{memberAddress},</if> 
-			<if test="memberAge != null">MEMBER_AGE = #{memberAge},</if>  
+			<if test="memberAge != 0">MEMBER_AGE = #{memberAge},</if>  
 			<if test="memberTel != null">MEMBER_TEL = #{memberTel},</if>
 			<if test="memberAuthor != null">MEMBER_AUTHOR = #{memberAuthor}</if> 
 		</set>
@@ -38,5 +38,17 @@
 		SELECT CASE WHEN COUNT(MEMBER_ID) = 1 THEN 0 ELSE 1 END AS ID
 		FROM MEMBER
 		WHERE MEMBER_ID = #{id}
+	</select>
+	
+	<select id="productList" resultType="map">
+		SELECT  product_code as "productCode",
+				product_name as "productName",
+				product_desc as "productDesc",
+				price as "price",
+				sale_price as "salePrice",
+				like_it as "likeIt",
+				image as "image"
+		from product order by product_code
+		
 	</select>
 </mapper>

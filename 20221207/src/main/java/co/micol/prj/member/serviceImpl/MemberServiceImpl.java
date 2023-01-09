@@ -1,6 +1,7 @@
 package co.micol.prj.member.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -43,4 +44,8 @@ public class MemberServiceImpl implements MemberService {
 		return map.isIdCheck(id);
 	}
 
+	@Override
+	public List<Map<String, Object>> productList() {
+		return map.productList();
+	}
 }

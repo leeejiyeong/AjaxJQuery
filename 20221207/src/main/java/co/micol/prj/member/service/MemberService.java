@@ -1,6 +1,7 @@
 package co.micol.prj.member.service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MemberService {
 	List<MemberVO> memberSelectList(); //전체조회
@@ -10,4 +11,7 @@ public interface MemberService {
 	int memberUpdate(MemberVO vo);  //수정
 	
 	boolean isIdCheck(String id);  //아이디 중복체크 존재하면 false
+	
+	//상품목록
+	List<Map<String, Object>> productList();
 }
