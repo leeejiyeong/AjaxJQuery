@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="myapp.jquery" template="/WEB-INF/layout/template.jsp">
+		<put-attribute name="title" value="My JQuery Test" />
+		<put-attribute name="sidebar" value="/WEB-INF/layout/sidebar.jsp" />
+		<put-attribute name="body" value="/WEB-INF/layout/content.jsp" />
+		<put-attribute name="top" value="/WEB-INF/layout/top.jsp" />
+	</definition>
+	
+	<definition name="WILDCARD:jquery/*" extends="myapp.jquery">
+		<put-attribute name="body" value="/WEB-INF/views/jquery/{1}.jsp" />
+	</definition>
+	
+	<definition name="myapp.homepage" template="/WEB-INF/views/layouts/classic.jsp">
+		<put-attribute name="title" value="My First" />
+		<put-attribute name="menu" value="/WEB-INF/views/layouts/menu.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/layouts/footer.jsp" />
+	</definition>
+	
+	<definition name="WILDCARD:*/*" extends="myapp.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+</tiles-definitions>
