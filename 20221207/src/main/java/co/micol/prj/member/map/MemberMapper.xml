@@ -49,6 +49,36 @@
 				like_it as "likeIt",
 				image as "image"
 		from product order by product_code
-		
 	</select>
+	
+	<select id="productDetail" parameterType="String" resultType="map">
+		SELECT  product_code as "productCode",
+				product_name as "productName",
+				product_desc as "productDesc",
+				price as "price",
+				sale_price as "salePrice",
+				like_it as "likeIt",
+				image as "image"
+		from product
+		where product_code = #{item}
+		
+	</select> 
+	
+	<select id="relatedProducts" resultType="map">
+		SELECT  product_code as "productCode",
+				product_name as "productName",
+				product_desc as "productDesc",
+				price as "price",
+				sale_price as "salePrice",
+				like_it as "likeIt",
+				image as "image"
+		from (
+    		select * from product
+    		order by like_it desc
+		) 
+		<![CDATA[
+		where rownum <= 4
+		]]>
+	</select>
+	
 </mapper>

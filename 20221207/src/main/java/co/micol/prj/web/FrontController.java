@@ -28,13 +28,18 @@ import co.micol.prj.member.command.MemberLoginForm;
 import co.micol.prj.member.command.MemberLogout;
 import co.micol.prj.member.command.MemberSelect;
 import co.micol.prj.member.command.MemberUpdate;
+import co.micol.prj.member.command.ProductDetail;
+import co.micol.prj.member.command.ProductInfo;
 import co.micol.prj.member.command.ProductList;
 import co.micol.prj.member.command.ProductListForm;
+import co.micol.prj.member.command.RelatedProducts;
 import co.micol.prj.member.command.UpdateMemberAjax;
 import co.micol.prj.notice.command.NoticeInsert;
 import co.micol.prj.notice.command.NoticeInsertForm;
 import co.micol.prj.notice.command.NoticeList;
+import co.micol.prj.notice.command.NoticePagingForm;
 import co.micol.prj.notice.command.NoticeSelect;
+import co.micol.prj.notice.command.noticeListPaging;
 
 //@WebServlet("*.do")
 public class FrontController extends HttpServlet {
@@ -75,6 +80,12 @@ public class FrontController extends HttpServlet {
 		
 		map.put("/productList.do", new ProductList());				//상품리스트
 		map.put("/productListForm.do", new ProductListForm());		//상품리스트 폼
+		map.put("/productInfo.do", new ProductInfo());				//상품상세 폼
+		map.put("/productDetail.do", new ProductDetail());			//상품상세정보(json기능)
+		map.put("/relatedProducts.do", new RelatedProducts());		//관련상품
+		
+		map.put("/noticePagingForm.do", new NoticePagingForm());		//게시글 페이지 나누기 폼
+		map.put("/noticeListPaging.do", new noticeListPaging());		//게시글 페이지
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

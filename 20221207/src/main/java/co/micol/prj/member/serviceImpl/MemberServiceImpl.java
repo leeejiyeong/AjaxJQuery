@@ -48,4 +48,12 @@ public class MemberServiceImpl implements MemberService {
 	public List<Map<String, Object>> productList() {
 		return map.productList();
 	}
+	@Override
+	public Map<String, Object> productDetail(String item) {
+		return map.productDetail(item);
+	}
+	@Override
+	public List<Map<String, Object>> relatedProducts() {
+		return map.relatedProducts();
+	}
 }

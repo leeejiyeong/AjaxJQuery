@@ -14,6 +14,17 @@
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet" />
+<!-- 폰투 -->
+<style>
+@import
+	url('https://fonts.googleapis.com/css2?family=Dongle&family=Gowun+Batang:wght@400;700&display=swap')
+	;
+
+* {
+	font-family: 'Dongle', sans-serif;
+	font-family: 'Gowun Batang', serif;
+}
+</style>
 </head>
 
 <body>

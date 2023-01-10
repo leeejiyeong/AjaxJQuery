@@ -14,4 +14,10 @@ public interface MemberService {
 	
 	//상품목록
 	List<Map<String, Object>> productList();
+	
+	//상품상세
+	Map<String, Object> productDetail(String item);
+	
+	//평점순 4개
+	List<Map<String, Object>> relatedProducts();
 }
