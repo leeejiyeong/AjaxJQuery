@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import co.micol.prj.common.Criteria;
 import co.micol.prj.common.DataSource;
 import co.micol.prj.notice.map.NoticeMapper;
 import co.micol.prj.notice.service.NoticeAttechVO;
@@ -59,5 +60,15 @@ public class NoticeServiceImpl implements NoticeService {
 	public void noticeHitUpdate(int id) {	
 		map.noticeHitUpdate(id);
 	}
-
+	
+	@Override
+	public List<NoticeVO> noticePagingList(Criteria cri) {
+		return map.noticeListPaging(cri);
+	}
+	
+	@Override
+	public int pagingAllCount(Criteria cri) {
+		return map.pagingAllCount(cri);
+	}
+	
 }

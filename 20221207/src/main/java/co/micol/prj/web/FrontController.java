@@ -37,8 +37,12 @@ import co.micol.prj.member.command.UpdateMemberAjax;
 import co.micol.prj.notice.command.NoticeInsert;
 import co.micol.prj.notice.command.NoticeInsertForm;
 import co.micol.prj.notice.command.NoticeList;
+import co.micol.prj.notice.command.NoticePageDTO;
+import co.micol.prj.notice.command.NoticePaging;
+import co.micol.prj.notice.command.NoticePagingAjax;
 import co.micol.prj.notice.command.NoticePagingForm;
 import co.micol.prj.notice.command.NoticeSelect;
+import co.micol.prj.notice.command.noticeDelAjax;
 import co.micol.prj.notice.command.noticeListPaging;
 
 //@WebServlet("*.do")
@@ -86,6 +90,11 @@ public class FrontController extends HttpServlet {
 		
 		map.put("/noticePagingForm.do", new NoticePagingForm());		//게시글 페이지 나누기 폼
 		map.put("/noticeListPaging.do", new noticeListPaging());		//게시글 페이지
+		map.put("/noticePagingAjax.do", new NoticePagingAjax());		//페이징
+		map.put("/noticePageDTO.do", new NoticePageDTO());				//페이지마다 가져오는거 넘기는 용도
+		map.put("/noticePaging.do", new NoticePaging());				//?
+		map.put("/noticeDelAjax.do", new noticeDelAjax());				//한줄 삭제하기
+		
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -52,4 +52,36 @@
 	<update id="noticeHitUpdate">
 		UPDATE NOTICE SET NOTICE_HIT = NOTICE_HIT + 1 WHERE NOTICE_ID = #{id}
 	</update>
+	
+	<select id="noticeListPaging" parameterType="co.micol.prj.common.Criteria" resultType="co.micol.prj.notice.service.NoticeVO">
+		select b.*
+    	from (select rownum rn, a.* 
+    		from (select * from notice 
+    				<where>
+    					<if test="searchCondition == 'title'">
+    						notice_title like '%'||#{keyword}||'%'
+    					</if>
+    					<if test="searchCondition == 'writer'">
+    						notice_writer like '%'||#{keyword}||'%'
+    					</if>
+    				</where>
+    				order by notice_id) a
+    		<![CDATA[
+    		where rownum <= #{page} * #{amount}) b
+		where b.rn >= #{page} * #{amount} - (#{amount} - 1)
+    		]]>
+	</select>
+	
+	<select id="pagingAllCount" resultType="int" parameterType="co.micol.prj.common.Criteria">
+		select count(1)
+		from notice
+		<where>
+    		<if test="searchCondition == 'title'">
+    			notice_title like '%'||#{keyword}||'%'
+    		</if>
+    		<if test="searchCondition == 'writer'">
+    			notice_writer like '%'||#{keyword}||'%'
+    		</if>
+    	</where>
+	</select>
 </mapper>

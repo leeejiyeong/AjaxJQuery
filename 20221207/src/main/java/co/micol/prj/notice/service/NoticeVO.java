@@ -2,6 +2,8 @@ package co.micol.prj.notice.service;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +12,8 @@ import lombok.Setter;
 public class NoticeVO {
 	private int noticeId;
 	private String noticeWriter;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date noticeDate;
 	private String noticeTitle;
 	private String noticeSubject;

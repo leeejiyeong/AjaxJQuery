@@ -2,6 +2,8 @@ package co.micol.prj.notice.service;
 
 import java.util.List;
 
+import co.micol.prj.common.Criteria;
+
 public interface NoticeService {
 	List<NoticeVO> noticeSelectList();
 	NoticeVO noticeSelect(NoticeVO vo);  //첨부파일 한개만 받음
@@ -13,6 +15,9 @@ public interface NoticeService {
 	int noticeAttechInsert(NoticeAttechVO vo); //첨부파일 저장	
 	
 	void noticeHitUpdate(int id); //조회수 증가
+	int pagingAllCount(Criteria cri);
 	
 	List<NoticeVO> noticeSearchList(String key, String val);  //게시글 내 검색을 위해
+	
+	List<NoticeVO> noticePagingList(Criteria cri);	//페이징
 }
