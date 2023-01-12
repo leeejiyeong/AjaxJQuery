@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>basic4</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+<!-- 
+    자바스크립트 코드 위에서 실행되는데 좀 특이함
+    리엑트 이런 프레임워크보다 쉽다는거지 헷갈린다
+    규칙을 기억 못하면 써먹기가 어렵다
+    긴가민가하다(?)
+    
+ -->
+<body>
+    <div id="app">
+        <select v-model="myColor">
+            <option value="" disabled>선택::</option>
+            <option value="red">빨강</option>
+            <option value="green">초록</option>
+            <option value="blue">퍼렁</option>
+            <option value="orange">주황</option>
+        </select>
+        <p v-bind:style="{color: myColor}">선택된 색깔 : {{myColor}}</p>
+        <label><input type="checkbox" v-model="agree">동의</label>
+        <button v-bind:disabled="!agree">송신</button>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                myColor:[],
+                agree:''
+            }
+        })
+    </script>
+</body>
+
+</html>

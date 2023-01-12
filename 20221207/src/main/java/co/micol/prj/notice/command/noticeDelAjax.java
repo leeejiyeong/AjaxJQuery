@@ -18,22 +18,19 @@ public class noticeDelAjax implements Command {
 
 	@Override
 	public String exec(HttpServletRequest request, HttpServletResponse response) {
-		String nId = request.getParameter("id");
+		// TODO Auto-generated method stub
+		String nid = request.getParameter("id");
 		NoticeVO vo = new NoticeVO();
-		vo.setNoticeId(Integer.valueOf(nId));
-		
+		vo.setNoticeId(Integer.parseInt(nid));
+
 		NoticeService service = new NoticeServiceImpl();
-		int cnt - service.noticeDelete(vo);
-		
-		Map<String, Object> map = new HashMap<>();
-		ObjectMapper mapper = new ObjectMapper();
+
+		int cnt = service.noticeDelete(vo);
 		String json = "";
-		
-		try {
-			json =  mapper.writeValueAsString(map);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+		if (cnt > 0)
+			json = "{\"retCode\":\"Success\"}";
+		else
+			json = "{\"retCode\":\"Fail\"}";
 		return "Ajax:" + json;
 	}
 

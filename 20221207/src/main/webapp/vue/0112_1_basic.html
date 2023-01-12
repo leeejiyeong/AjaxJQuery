@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>basic.html</title>
+
+    <!--vue라이브러리 추가-->
+    <script src="https://unpkg.com/vue@2"></script> 
+</head>
+
+<body>
+    <!-- View역할-->
+    <div id="app">
+        <!--
+        방법1) 머스테시 구문(중괄호가 콧수염처럼 생겨서 그래부름) 사용
+        방법2) v-text라는 지시자를 사용해서 넣는방법
+        v-html : html요소 가져와서 넣어주는(?) 지시자 (약간 innerHTML비슷한거 같음)
+        -->
+        <p>{{msg}}</p>          
+        <p v-text="msg"></p>   
+        <p v-html="mess"></p> 
+    </div>
+
+    <script>
+        //Model역할
+        new Vue({           // 뷰 인스턴스(객체) : View와 Model을 연결함(바인딩하는 역할)
+            el: '#app',     // id가 app인 view를 연결하겠다
+            data: {         // 화면에 보여질 데이터 부분
+                msg: 'Hello, World',
+                mess: '<b>강조</b>합니다' 
+            }
+        });  
+    </script>
+<!-- ======================================== -->
+
+    <div id="show">
+        <!-- 
+        숫자의 경우 연산도 가능함.
+        텍스트, 불린타입, 배열, 오브젝트타입 다 가능하다.
+        배열의 경우 [인덱스번호] 사용가능, 오브젝트의 경우 .key값 사용가능
+        _data 혹은 $data :  적어놓은 모든 데이터 다나온다   
+        -->
+        <p>{{myNumber * 2}}</p>
+        <p>{{myText + '를 배워봅시다'}}</p>
+        <p>{{myBool}}</p>
+        <p>{{myAry[0]}}</p>
+        <p>{{myObj.name+ ', ' +myObj.age}}</p>
+        <p>{{$data}}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#show',
+            data: {
+                myNumber: 123,
+                myText: 'Vue.js',
+                myBool: true,
+                myAry: ['커피', '홍차', '밀크', '가베'],
+                myObj: {
+                    name: '김또치',
+                    age: 22
+                }
+            }
+        });
+        console.log(vm);
+        vm.myNumber = 200;      //이런식으로 값 변경도 가능. 바로 뷰 영역에 반영되어서 보여진다.
+        vm.myText = 'Jquery';
+    </script>
+</body>
+
+</html>

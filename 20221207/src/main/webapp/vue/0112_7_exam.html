@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <label><input type="radio" value="Male" v-model="selGender">Men</label>
+            <label><input type="radio" value="Female" v-model="selGender">Women</label>
+        </div>
+        <div>
+            <label><input type="radio" value="1000" v-model="selGrade">1000이상</label>
+            <label><input type="radio" value="2000" v-model="selGrade">2000이상</label>
+            <label><input type="radio" value="3000" v-model="selGrade">3000이상</label>
+        </div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>아이디</th>
+                    <!-- <th>성</th> -->
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>성별</th>
+                    <th>급여</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr v-for="prop in members">
+                    <td v-for ="pr in prop">
+                        {{pr}}
+                    </td>
+                </tr> -->
+                <!-- <tr v-for="member in members" v-if="member.gender == selGender"> -->
+                <tr v-for="member in members" v-if="member.salary >= selGrade">
+                    <td>{{member.id}}</td>
+                    <td>{{member.last_name +' '+ member.first_name}}</td>
+                    <td>{{member.email}}</td>
+                    <td>{{member.gender}}</td>
+                    <td>{{member.salary}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let json = `
+            [{"id":1,"first_name":"Danila","last_name":"Frankowski","email":"dfrankowski0@exblog.jp","gender":"Genderqueer","salary":2738},
+            {"id":2,"first_name":"Cary","last_name":"Pearcehouse","email":"cpearcehouse1@vk.com","gender":"Female","salary":1552},
+            {"id":3,"first_name":"Ulrike","last_name":"O'Scandall","email":"uoscandall2@unicef.org","gender":"Female","salary":2513},
+            {"id":4,"first_name":"Augy","last_name":"Esposi","email":"aesposi3@virginia.edu","gender":"Male","salary":4300},
+            {"id":5,"first_name":"Drusilla","last_name":"Heisman","email":"dheisman4@bigcartel.com","gender":"Female","salary":4732},
+            {"id":6,"first_name":"Yovonnda","last_name":"Albone","email":"yalbone5@cnbc.com","gender":"Female","salary":1311},
+            {"id":7,"first_name":"Eadith","last_name":"Rosone","email":"erosone6@woothemes.com","gender":"Female","salary":2082},
+            {"id":8,"first_name":"Lynnelle","last_name":"Timby","email":"ltimby7@timesonline.co.uk","gender":"Female","salary":4599},
+            {"id":9,"first_name":"Melodie","last_name":"Franzonetti","email":"mfranzonetti8@abc.net.au","gender":"Female","salary":4107},
+            {"id":10,"first_name":"Iago","last_name":"Hiers","email":"ihiers9@163.com","gender":"Male","salary":2385}]
+        `;
+
+        let list = JSON.parse(json);
+        console.log(list);
+        
+        new Vue({
+            el: '#app',
+            data: {
+                selGender: 'Male',
+                members: list,
+                selGrade: '1000'
+            }
+        })
+    </script>
+</body>
+
+</html>

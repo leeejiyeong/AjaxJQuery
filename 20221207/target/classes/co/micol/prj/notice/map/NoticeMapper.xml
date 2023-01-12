@@ -65,7 +65,7 @@
     						notice_writer like '%'||#{keyword}||'%'
     					</if>
     				</where>
-    				order by notice_id) a
+    				order by notice_id desc) a
     		<![CDATA[
     		where rownum <= #{page} * #{amount}) b
 		where b.rn >= #{page} * #{amount} - (#{amount} - 1)

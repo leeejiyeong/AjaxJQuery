@@ -35,6 +35,7 @@ import co.micol.prj.member.command.ProductListForm;
 import co.micol.prj.member.command.RelatedProducts;
 import co.micol.prj.member.command.UpdateMemberAjax;
 import co.micol.prj.notice.command.NoticeInsert;
+import co.micol.prj.notice.command.NoticeInsertAjax;
 import co.micol.prj.notice.command.NoticeInsertForm;
 import co.micol.prj.notice.command.NoticeList;
 import co.micol.prj.notice.command.NoticePageDTO;
@@ -94,6 +95,7 @@ public class FrontController extends HttpServlet {
 		map.put("/noticePageDTO.do", new NoticePageDTO());				//페이지마다 가져오는거 넘기는 용도
 		map.put("/noticePaging.do", new NoticePaging());				//?
 		map.put("/noticeDelAjax.do", new noticeDelAjax());				//한줄 삭제하기
+		map.put("/noticeInsertAjax.do", new NoticeInsertAjax());		//공지사항 등록하기
 		
 	}
 

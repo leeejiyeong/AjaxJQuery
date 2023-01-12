@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event4</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+<!-- watch : 속성을 감시하고 있다가 어떤 특정상태가 되면 발동이 됨 -->
+
+<body>
+    <div id="app">
+        <input type="text" v-model="forbidText"><br><br>
+        <textarea cols="30" rows="3" v-model="inputText" v-bind:disabled="writable"></textarea>
+        <p>{{inputText}}</p>
+        <input type="text" v-model.number="restTime">
+        <p>남은시간: {{restTime}}초</p>
+        <button v-on:click="startTimer">시작</button>
+    </div>
+    <script>
+        //문자열을 배열로 변경해주는함수 split(구분자)
+        new Vue({
+            el: '#app',
+            data: {
+                inputText: '',
+                forbidText: [],
+                restTime: 5,
+                writable: false,
+                timer: null
+            },
+            methods: {
+                startTimer: function () {
+                    this.timer = setInterval(() => {
+                        /* 
+                        this => function()에서는 this = window전역객체
+                        this => eventHandler에서는 this = event대상 
+                        여기서 그냥 function(){}쓰면 this의 객체가 window이기 때문에 this.restTime읽어들이지 못함.(NaN뜸)
+                        화살표 함수로 바꿔주면 해결
+                        */
+                        this.restTime--;
+                        console.log(this.restTime)
+                    }, 1000)
+                }
+            },
+            watch: {
+                inputText: function () {
+                    let forbidTxt = this.forbidText.split(',')
+                    for(let i in forbidTxt){
+                        let pos = this.inputText.indexOf(forbidTxt[i])
+                        if (pos != -1) {
+                            alert(forbidTxt[i] + ' 은(는) 금지단어입니다');
+                            this.inputText = this.inputText.substring(0, pos)
+                        }
+                    }
+                },
+                restTime: function () {
+                    if (this.restTime == 0) {
+                        console.log('rest callll')
+                        this.writable = true;
+                        clearInterval(this.timer);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

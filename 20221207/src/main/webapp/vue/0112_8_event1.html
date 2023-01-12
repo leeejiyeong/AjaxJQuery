@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event1</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-on : 이벤트 지정 -->
+        <button v-on:click="countUp">카운트 증가</button>
+        <button v-on:click="countNum(2)">카운트 증가2</button>
+        <hr>
+        <input type="number" v-model="myNum" value="5">
+        <button v-on:click="countVal()">카운트 증가3</button>
+        <p>{{count}}</p>
+        <hr>
+        <div>
+            과일:
+            <input type="text" v-model="fruit">
+            <button v-on:click="addFruit">추가</button>
+            <button v-on:click="removeFruit">삭제</button>
+            <ul>
+                <li v-for="item in fruits">
+                    <span>{{item}}</span>
+                    <span><button v-on:click="delFruit(item)">삭제</button></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                count: 0,
+                myNum: 5,
+                fruits: ['사과', '배', '오랜지', '복숭아', '버네너'],
+                fruit: ''
+            },
+            methods: { //이벤트, 함수는 methods라는 속성안에다가 정리해야한다
+                countUp: function () {
+                    console.log('countUp', this)
+                    this.count++;
+                },
+                countNum: function (cnt) {
+                    this.count += cnt;
+                },
+                countVal: function () {
+                    this.count += parseInt(this.myNum);
+                },
+                addFruit: function () {
+                    if (!this.fruit) {
+                        alert('값을 입력바람')
+                        return;
+                    }
+                    this.fruits.push(this.fruit);
+                    this.fruit = ''
+                },
+                removeFruit: function () {
+                    //this.fruits.splice(1, 1)    //splice(인덱스값, 갯수, [값]) : 추가 삭제 변경 다 가능
+
+                    //forEach사용
+                    this.fruits.forEach((item, idx) => {
+                        if (item == this.fruit) { //입력한거랑 과일이름이 같으면 
+                            this.fruits.splice(idx, 1) //그 과일 위치의 인덱스값에서 하나를 빼겠다
+                        }
+                    })
+                    this.fruit = '';
+
+                    /* //for사용
+                    for(let i=0; i<this.fruits.length; i++){
+                        if(this.fruit == this.fruits[i]){
+                            this.fruits.splice(i,1);
+                        }
+                    }
+                    this.fruit=''; */
+                },
+                delFruit: function (item) {
+                    //for사용
+                    for(let i=0; i<this.fruits.length; i++){
+                        if(item == this.fruits[i]){
+                            this.fruits.splice(i,1);
+                        }
+                    }
+
+                    /* this.fruits.forEach((item, idx) => {
+                        if (item == this.fruit) {
+                            this.fruits.splice(idx, 1)
+                        }
+                    })
+                     */
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

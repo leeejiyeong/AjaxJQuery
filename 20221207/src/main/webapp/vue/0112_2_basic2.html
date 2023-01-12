@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>basic2</title>
+    <style>
+        .strike-through {
+            text-decoration: line-through;
+            color: lightgray;
+        }
+
+        .dark {
+            background-color: gray;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 
+        v-bind : 태그의 속성 지정(setAttribute, attr같은것)
+        여기다가 v-bind적어놓고 밑에 model에서 안적으면 에러난다.
+        -->
+        <img src="loopy.jpg" width="100px" style="opacity: 0.7;">
+        <img v-bind:style="myStyle" v-bind:src="myImg" v-bind:width="myWid">
+        <hr>
+        <a href="https://www.naver.com" v-bind:target="myTarget">Naver</a>
+        <button v-bind:disabled="mybool">클릭</button>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                myImg: 'happyloopy.png',
+                myWid: '150px',
+                myStyle: 'opacity: 0.5; border-style: solid; border-width:2px; border-color:red',
+                myTarget: '_blank', //새로운 창에 열림
+                mybool: true
+            }
+        })
+    </script>
+
+    <div class="app">
+        <p style="color:red;">직접 지정</p>
+        <p v-bind:style="{color:myColor}">bind로 지정</p>
+        <p v-bind:style="styleObj">Object스타일로 지정</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '.app',
+            data: {
+                myColor: 'blue',
+                styleObj: {
+                    color: 'green',
+                    backgroundColor: 'yellow', //하이픈(-)을 사용하지 못하기 때문에 카멜케이스로 작성해야함
+                    fontSize: 'x-large'
+                }
+            }
+        })
+    </script>
+
+    <div class="show">
+        <p class="strike-through">클래스 지정</p>
+        <p v-bind:class="myClass">bind로 지정</p>
+        <p v-bind:class="[myClass, myDark]">bind2로 여러개 지정</p>
+        <p v-bind:class="{'strike-through': isOK}">bind3지정(ture/false)</p>
+        <p v-bind:class="aryClass">bind4로 배열로 지정</p>
+
+    </div>
+
+    <script>
+        new Vue({
+            el: '.show',
+            data: {
+                myClass: 'strike-through',
+                myDark: 'dark',
+                isOK: false,
+                aryClass: ['strike-through', 'dark']        //여러개를 지정하고 싶을때는 bind2보다는 bind4를 사용하는게 편리.
+            }
+        })
+    </script>
+</body>
+
+</html>

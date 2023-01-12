@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>basic3</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <!-- v-model : 양방향 바인딩(주로 input태그에서 사용된다).v-model에 입력된거를 data에서 가져와서 다시 {{myname}}에 뿌려줌-->
+    <div id="app">
+        <input type="text" v-model="myName">
+        <p>{{myName}}</p>
+        <textarea v-model="myText"></textarea>
+        <p>내용은 [{{myText}}]</p>
+        <p>문자수는 '{{myText.length}}'자 입니다</p>
+        <label for="">
+            체크<input type="checkbox" v-model="myCheck" true-value="쳌" false-value="노쳌">
+            <p>체크의 상태값 : {{myCheck}}</p>
+        </label>
+
+        <div>
+            <label><input type="checkbox" v-model="myHobbies" value="reading">독서</label>
+            <label><input type="checkbox" v-model="myHobbies" value="movie">영화</label>
+            <label><input type="checkbox" v-model="myHobbies" value="exercise">운동</label>
+            <p>선택된 취미: {{myHobbies}}</p>
+        </div>
+
+        <div>
+            <label><input type="radio" v-model="hobby" value="reading">독서</label>
+            <label><input type="radio" v-model="hobby" value="movie">영화</label>
+            <label><input type="radio" v-model="hobby" value="exercise">운동</label>
+            <p>선택된 취미: {{hobby}}</p>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                myName: '',
+                myText: '',
+                myCheck: '',
+                myHobbies: [],
+                hobby: []
+            }
+        })
+    </script>
+</body>
+
+</html>

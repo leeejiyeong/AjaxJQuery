@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event3</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- computed : data를 연산처리한 결과값을 담을때 사용 -->
+        <p>{{friends}}</p>
+        <p>{{filterFriend}}</p>
+        <hr>
+
+        <input type="number" v-model="price">원<br>
+        <input type="number" v-model="count">개<br>
+        <p>합계 : {{sum}}</p>
+        <hr>
+
+        <p>감상 내용을 50자 이하로 작성해주세요</p>
+        <textarea cols="30" rows="3" v-model="myText" v-bind:disabled="writable"></textarea>
+        <p v-bind:style="{color:warningColor}">남은 글자수 : {{remaining}}</p>
+        <hr>
+
+        <input type="text" v-model="findWord">
+        <ul>
+            <li v-for="word in filterWord">{{word}}</li>
+        </ul>
+
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                friends: ['hong', 'park'],
+                price: 1000,
+                count: 3,
+                myText: '',
+                writable: false,
+                wordList: ['apple', 'banana', 'can', 'dream', 'ahri', 'lux', 'xayah'],
+                findWord: ''
+            },
+            computed: {
+                filterWord: function () {
+                    if (this.findWord) {
+                        return this.wordList.filter(word => {       //filter: 새로운 배열을 만들어서 인덱스값을 넘긴다
+                            console.log(word, this.findWord)
+                            return word.indexOf(this.findWord) != -1;
+                        })
+                    } else {
+                        return this.wordList;
+                    }
+                },
+                filterFriend: function () {
+                    return this.friends.filter(friend => {
+                        return friend.indexOf('ho') != -1;
+                    })
+                },
+                sum: function () {
+                    return this.price * this.count;
+                },
+                remaining: function () {
+                    return 50 - this.myText.length;
+                },
+                warningColor: function () {
+                    if (this.remaining == 0) {
+                        this.writable = true;
+                    } else if (this.remaining <= 10) {
+                        return 'blue';
+                    } else if (this.remaining <= 30) {
+                        return 'red';
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

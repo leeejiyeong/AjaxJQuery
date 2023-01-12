@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>for</title>
+    <!--링크를 바꿔보았다(상관없음)-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <!-- 
+            v-for : 반복문
+            //for(let item of items)와 비교하면
+            myAry == items와 같은 역할
+            of랑 in이랑 차이가 없는것 같다.
+            인덱스를 들고오고 싶으면 
+            (값, 인덱스) in 배열 {{인덱스}} 쓰면된다.
+
+        -->
+        <ul>
+            배열활용(값->item, 인덱스->idx)
+            <li v-for="(item, idx) in myAry">{{idx}}, {{item}}</li>
+        </ul>
+        <ul>
+            오브젝트 가져오기
+            <li v-for="obj in myObj">{{obj.name}}, {{obj.price}}</li>
+        </ul>
+        <ul>
+            단순반복
+            <li v-for="num in 10">{{num}}</li>
+        </ul>
+
+        
+        <ul> 구구단{{dan}}단
+            <li v-for="num in 9">{{dan}} * {{num}} = {{dan*num}}</li>
+        </ul>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                dan: 2,
+                myAry: ['설악산', '한라산', '백두산', '지리산'],
+                myObj: [{
+                    name: "슈크림빵",
+                    price: 2000
+                }, {
+                    name: "단팥빵",
+                    price: 3000
+                }, {
+                    name: "생일빵",
+                    price: 4000
+                }]
+            }
+        })
+    </script>
+
+    <div id="app2">
+        <h3>관심받는 언어랭킹</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th v-for="lan in header">{{lan}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in ranking">
+                    <td v-for="(rank, idx) in item">{{rank}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app2',
+            data: {
+                header: ['프로그래밍언어', 2018, 2013, 2008, 2003, 1998],
+                ranking: [
+                    ['java', 1, 2, 1, 1, 16],
+                    ['C', 2, 1, 2, 2, 1],
+                    ['C++', 3, 4, 3, 3, 2],
+                    ['Python', 4, 7, 6, 11, 23],
+                    ['JavaScript', 7, 10, 8, 7, 20]
+                ]
+            }
+        })
+    </script>
+</body>
+
+</html>

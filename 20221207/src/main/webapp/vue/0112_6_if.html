@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>if</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <!-- 
+        if와 else 
+    -->
+    <div id="app">
+        <p v-if="score > 60">Pass</p>
+        <p v-else="">Fail</p>
+        <hr>
+        <p v-if="score >= 90">A학점</p>
+        <p v-else-if="score >= 80">B학점</p>
+        <p v-else-if="score >= 70">C학점</p>
+        <p v-else-if="score >= 60">D학점</p>
+        <p v-else>F학점</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                score: 80
+            }
+        })
+    </script>
+</body>
+
+</html>

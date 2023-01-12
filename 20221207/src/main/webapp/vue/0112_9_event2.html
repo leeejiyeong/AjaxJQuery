@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event2</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="friendName">
+        <input type="text" v-model="friendAge">
+        <button v-on="addFriend">등록</button>
+
+        <table>
+            <tbody>
+                <tr v-for="friend in friends">
+                    <td>{{friend.name}}</td>
+                    <td>{{friend.age}}</td>
+                    <td><button v-on:click="delFriend(friend.name)">삭제</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                friendName: '',
+                friendAge: '',
+                friends: [{
+                        name: '홍길동',
+                        age: 20
+                    },
+                    {
+                        name: '김길동',
+                        age: 30
+                    }
+                ]
+            },
+            methods: {
+                addFriend: function () {
+                    let list = {
+                        name: this.friendName,
+                        age: this.friendAge
+                    }
+                    this.friend.push(list)
+                },
+                delFriend: function (friendName) {
+                    for (let i = 0; i < this.friends.length; i++) {
+                        
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+select * from notice;
+
+--1page: 1~10, 2page: 11~20, 3page:21~30....
+
+select b.*
+    from (select rownum rn, a.* --rownum은 가지고온 데이터를 순서대로 나열한것. 11부터 20까지 이런거 안됨. 가져오고싶음 묶어서 또 rownum해줘야함
+    from (select * from notice order by notice_id) a
+    where rownum <=4*10) b
+where b.rn >=4*10-9
+;
+
+select count(*) from notice;
+
+
+select count(1) from notice where notice_id <=267;
+
+delete from notice where notice_id >=260;
