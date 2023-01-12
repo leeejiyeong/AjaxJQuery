@@ -13,7 +13,7 @@
     <div id="app">
         <input type="text" v-model="friendName">
         <input type="text" v-model="friendAge">
-        <button v-on="addFriend">등록</button>
+        <button v-on:click="addFriend">등록</button>
 
         <table>
             <tbody>
@@ -48,10 +48,21 @@
                         name: this.friendName,
                         age: this.friendAge
                     }
-                    this.friend.push(list)
+                    if (!list.name || !list.age) {
+                        alert('값을 입력바람')
+                        return;
+                    }
+                    this.friends.push(list)
                 },
                 delFriend: function (friendName) {
+                    console.log(friendName)
+                    
                     for (let i = 0; i < this.friends.length; i++) {
+                        if(friendName == this.friends[i].name){
+                           console.log(this.friends[i].name)
+                           console.log(this.friends[i])
+                           remove(this.friends[i]); //아니 이거 어케지움?????
+                       }
                         
                     }
                 }
