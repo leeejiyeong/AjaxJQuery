@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>component2</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-component></my-component>
+        <my-component></my-component>
+        <my-component></my-component>
+        <your-component></your-component>
+    </div>
+
+    <script>
+        //방법2 : 따로 변수를 선언해서 하기
+        var yourComponent = {
+            template: `
+                <ul>
+                    <li>Apple</li>
+                    <li>Banana</li>
+                    <li>{{msg}}</li>
+                </ul>
+            `,
+            data: function(){
+                return {
+                    msg:'Strawberry'
+                }
+            }
+
+
+        }
+
+        //방법1 : 그냥하기
+        new Vue({
+            el: '#app',
+            /* template: `
+            <div>
+                <p>hello</p>
+            </div>
+            ` */
+            components: {
+                'my-component': {
+                    template: `
+                        <p class="my-comp">카운터
+                            <button v-on:click="addOne">추가</button>
+                            <span>{{count}} / {{message}}</span>    
+                        </p>
+                    `,
+                    data: function(){       //component에서는 그냥 data로 정의 되면 안되고 function으로 정의해줘야함
+                        return{
+                            count: 0,
+                            message: 'Hello'
+                        }     
+                    },
+                    methods: {              //component안에서만 쓰이는 함수이기 때문에 요 안에 써줘야함
+                        addOne: function () {
+                            this.count++;
+                        }
+                    }
+                },
+                'your-component': yourComponent
+            }
+        })
+    </script>
+</body>
+
+</html>

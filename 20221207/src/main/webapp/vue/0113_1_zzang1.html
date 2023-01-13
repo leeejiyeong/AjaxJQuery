@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zzang1</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 버튼 -->
+        <button v-on:click="sort_no">학생번호순 정렬</button>
+        <button v-on:click="sort_name">학생이름순 정렬</button>
+        <button v-on:click="sort_score">학생성적순 정렬</button>
+
+        <!-- select리스트 -->
+        <select v-model="orderby" v-on:change="changeOrder">
+            <option v-bind:value="opt.val" v-for="opt in opts">{{opt.name}}</option>
+        </select>
+
+        <!-- 라디오 버튼 -->
+        <label>학번순 <input type="radio" v-model="radiorder" v-bind:value="no"></label>
+        <label>이름순 <input type="radio" v-model="radiorder" v-bind:value="name"></label>
+        <label>성적순 <input type="radio" v-model="radiorder" v-bind:value="score"></label>
+
+        <ul>
+            <li v-for="member in list">{{member.id}}, {{member.name}}, {{member.score}}</li>
+        </ul>
+    </div>
+
+    <script>
+        let members = [{
+                id: 101,
+                name: 'Hong',
+                score: 70
+            },
+            {
+                id: 103,
+                name: 'Kim',
+                score: 80
+            },
+            {
+                id: 102,
+                name: 'Park',
+                score: 95
+            },
+            {
+                id: 104,
+                name: 'Choi',
+                score: 75
+            }
+        ];
+
+        let options = [{
+                val: 'no',
+                name: '학번순'
+            },
+            {
+                val: 'name',
+                name: '이름순'
+            },
+            {
+                val: 'score',
+                name: '성적순'
+            }
+        ];
+
+        new Vue({
+            el: '#app',
+            data: {
+                list: members,
+                opts: options,
+                orderby: 'no',
+                radiorder: 'score',
+                no:'no',
+                name:'name',
+                score:'score'
+            },
+            methods: {
+                //이름순, 학번순, 성적순
+                sort_no: function () {
+                    /* members.sort(function (first, last) {
+                        return first.id - last.id;
+                        if (first.id < last.id) {
+                            return -10;
+                        } else {
+                            return 1;
+                        }
+                    }) */
+                    return this.list.sort(function (first, second) {
+                        return first.id - second.id;
+                    })
+                },
+                sort_name: function () {
+                    return this.list.sort(function (first, second) {
+                        if (first.name < second.name) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    })
+                },
+                sort_score: function () {
+                    return this.list.sort(function (first, second) {
+                        return first.score - second.score;
+                    })
+                },
+                changeOrder: function () {
+                    if (this.orderby == 'no') {
+                        this.sort_no()
+                    } else if (this.orderby == 'name') {
+                        this.sort_name()
+                    } else if (this.orderby == 'score') {
+                        this.sort_score()
+                    }
+                }
+            },
+            watch: {
+                radiorder: function(arg, arg1){ //매개변수1:새로운값, 매개변수2: 이전값
+                    console.log(arg, arg1);
+                    if(arg == 'no'){
+                        this.sort_no()
+                    }else if(arg == 'name'){
+                        this.sort_name()
+                    }else if(arg == 'score'){
+                        this.sort_score()
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

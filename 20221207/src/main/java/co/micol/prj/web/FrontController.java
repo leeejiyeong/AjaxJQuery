@@ -96,7 +96,7 @@ public class FrontController extends HttpServlet {
 		map.put("/noticePaging.do", new NoticePaging());				//?
 		map.put("/noticeDelAjax.do", new noticeDelAjax());				//한줄 삭제하기
 		map.put("/noticeInsertAjax.do", new NoticeInsertAjax());		//공지사항 등록하기
-		
+		//map.put("/bookListAjax.do", new BookListAjax());	)
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -20,7 +20,7 @@
                 <tr v-for="friend in friends">
                     <td>{{friend.name}}</td>
                     <td>{{friend.age}}</td>
-                    <td><button v-on:click="delFriend(friend.name)">삭제</button></td>
+                    <td><button v-on:click="delFriend(friend)">삭제</button></td>
                 </tr>
             </tbody>
         </table>
@@ -40,7 +40,8 @@
                         name: '김길동',
                         age: 30
                     }
-                ]
+                ],
+                friend:''
             },
             methods: {
                 addFriend: function () {
@@ -54,14 +55,14 @@
                     }
                     this.friends.push(list)
                 },
-                delFriend: function (friendName) {
-                    console.log(friendName)
+                delFriend: function (friend) {
                     
                     for (let i = 0; i < this.friends.length; i++) {
-                        if(friendName == this.friends[i].name){
-                           console.log(this.friends[i].name)
-                           console.log(this.friends[i])
-                           remove(this.friends[i]); //아니 이거 어케지움?????
+                        if(friend == this.friends[i]){
+                           //console.log(this.friends[i].name)
+                           //console.log(this.friends[i])
+                           //remove(this.friends[i]); //아니 이거 어케지움?????
+                           this.friends.splice(i,1);
                        }
                         
                     }

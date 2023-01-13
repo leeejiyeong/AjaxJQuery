@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>To do chart Vue</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        let originData = [
+            ['메뉴', '투표 수'],
+            ['도시락', 3],
+            ['갈비탕', 2],
+            ['피자', 4],
+            ['돈까스', 6],
+            ['짬뽕', 5],
+            ['치킨', 7]
+        ]
+        google.charts.load('current', {
+            'packages': ['corechart']
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable(originData);
+
+            var options = {
+                title: '추천 메뉴'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+    <ul id="list">
+        <li v-for="(menu, idx) in list" v-if="idx>0">
+            {{menu[0]}}
+            <button v-on:click="addMenu(menu,1)">👍</button>
+            <button v-on:click="addMenu(menu,-1)">👎</button>
+        </li>
+    </ul>
+
+    <script>
+        new Vue({
+            el: '#list',
+            data: {
+                list: originData
+            },
+            methods: {
+                addMenu: function (arg = [], arg2 = 1) {
+                    console.log(arg, arg2)
+                    this.list.forEach((menu, idx) => {
+                        //console.log(menu, idx)
+                        if (menu[0] == arg[0]) { //찾는 메뉴가 같으면
+                            let newObj = [menu[0], menu[1] + arg2]
+                            this.list.splice(idx, 1, newObj); //기존위치에 있는 값을 새로운 값으로 변경
+                        }
+                    })
+                    drawChart();
+                },
+            }
+        })
+    </script>
+</body>
+
+</html>

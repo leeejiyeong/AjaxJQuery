@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sort</title>
+</head>
+
+<body>
+    <script>
+        let numbers = [2,3,1,7,5]
+        console.log(numbers.sort());
+
+        let objs = [        
+            {name:'Hong', score:22},
+            {name:'Park', score:20},
+            {name:'Choi', score:23}
+        ]
+        //오브젝트의 경우 정렬기준의 매개값을 넣어줘야한다.
+        console.log(objs.sort(function(first, last){    
+            //return first.score - last.score;    //음수값이 반환 = 오름차순 정렬
+            //return last.score - first.score;    //양수값이 반환 = 내림차순 정렬
+            if(first.name < last.name) {    //문자타입은 if문사용
+                return -10;
+            } else {
+                return 1;
+            }
+        }))
+
+    </script>
+</body>
+
+</html>

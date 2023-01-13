@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>component1</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <table>
+
+    </table>
+
+    <div id="app">
+        <table-component></table-component>
+        <ul-component></ul-component>
+    </div>
+
+    <div id="app2">
+        <table-component></table-component>
+        <ul-component></ul-component>
+    </div>
+
+    <script>
+        //전역 component : 어느 인스턴스에서나 다 쓸수있음
+        Vue.component('table-component', {
+            template: `
+            <table>
+                <tr>
+                    <td>Hello</td>
+                    <td>Nice</td>
+                </tr>
+            </table>
+            `
+        })
+
+        //지역 component(인스턴스 component) : components에서 지정해서 특정 인스턴스에서만 쓸수있음
+        new Vue({
+            el: '#app',
+            components: {
+                'ul-component':{
+                    template: `
+                        <ul>
+                            <li>apple</li>
+                            <li>banana</li>
+                        </ul>
+                    `
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
