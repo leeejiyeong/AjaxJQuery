@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fileopen.html</title>
+</head>
+<!-- 첨부파일로 json파일을 선택하면 읽어들이는거 할거임. 일단 js로 -->
+
+<body>
+    <h2>json파일 읽기.</h2>
+    <input type="file" id="fileopen">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>상품번호</th>
+                <th>상품명</th>
+                <th>상품가격</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <script>
+        let fileobj = document.getElementById('fileopen')
+        fileobj.onchange = function (e) {
+            let file = e.target.files[0];
+            console.log(file)
+            if (file) { //파일이 있으면
+                var reader = new FileReader(); //FileReader라는걸 사용해서 읽어들여서
+                reader.onload = function (ee) {
+                    let result = JSON.parse(ee.target.result)   //json파싱
+                    console.log(result) 
+
+                    //테이블로 만들어주기
+                    let target = document.querySelector('tbody');
+                    //제목 반복
+                    result.products.forEach(item => {
+                        let tds = ['id', 'title', 'price']
+                        let tr = document.createElement('tr');
+                        //td반복
+                        for(let i in tds){
+                            let td = document.createElement('td');
+                            td.innerText = item[tds[i]];
+                            tr.append(td)
+                        }
+                        target.append(tr)
+
+                    })
+                }
+                reader.readAsText(file); // 호출
+            }
+        }
+    </script>
+</body>
+
+</html>

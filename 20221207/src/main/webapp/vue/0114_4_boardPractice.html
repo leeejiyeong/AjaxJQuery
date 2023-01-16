@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>boardPractice.html</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h2>간단한 게시판</h2>
+        <input type="file" @change="loadData"> <!-- @change == v-on:change -->
+        <my-board-list v-if="listOK" v-bind:object="dataArray" v-on:board-delete="boardDelete"
+            v-on:board-read="boardRead"></my-board-list>
+        <!-- board-delete : 커스텀 이벤트임 -->
+        <my-board-read v-if="readOK" v-bind:object="boardInfo" v-on:board-list="boardList"></my-board-read>
+    </div>
+
+    <script>
+        //목록을 조회하기 위한 컴포넌트
+        const myBoardList = {
+            template: `
+                <div>
+                    <table id="list">
+                        <tr>
+                            <th>글번호</th>
+                            <th>글제목</th>
+                            <th>조회수</th>
+                            <th>삭제</th>
+                        </tr>
+                        <tr v-for="board in object">
+                            <td>{{board.no}}</td>
+                            <td v-on:click="boardReadChild(board)" v-bind:style="{cursor:'pointer'}">{{board.title}}</td>
+                            <td>{{board.view}}</td>
+                            <td><button v-on:click="boardDeleteChild(board.no)">삭제</button></td>
+                        </tr> 
+                    </table>
+                </div>
+            `,
+            props: ['object'],
+            methods: {
+                boardDeleteChild: function (no) {
+                    //삭제
+                    this.$emit('board-delete', no) //상위요소의 이벤트(우리가 만든 커스텀이벤트) 호출
+                },
+                boardReadChild: function (info) {
+                    this.$emit('board-read', info)
+                }
+            }
+        }
+
+        //한건 조회하기 위한 컴포넌트 
+        const myBoardRead = {
+            template: `
+                <div>
+                    <table id="list">
+                        <tr>
+                            <td>글제목</td>
+                            <td>{{object.title}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{object.content}}</td>
+                        </tr>
+                    </table>
+                    <button v-on:click="boardListChild">목록으로</button>
+                </div>
+            `,
+            props: ['object'],
+            methods: {
+                boardListChild: function () {
+                    this.$emit('board-list')
+                }
+            }
+        }
+
+        //Root Component(제일 상위 컴포넌트)
+        new Vue({
+            el: '#app',
+            data: {
+                dataArray: [],
+                boardInfo: {},
+                listOK: true,
+                readOK: false
+            },
+            components: {
+                'my-board-list': myBoardList,
+                'my-board-read': myBoardRead
+            },
+            methods: {
+                loadData: function (e) { //파일 선택하면 화면에 목록뿌림 
+                    var file = e.target.files[0];
+                    console.log(file)
+                    var vm = this
+                    if (file) {
+                        var reader = new FileReader();
+                        reader.readAsText(file);
+                        reader.onload = function (e) {
+                            var result = JSON.parse(e.target.result)
+                            console.log(result);
+                            vm.dataArray = result.boards;
+                        }
+                    }
+                },
+                boardDelete: function (no) {
+                    for (let i in this.dataArray) {
+                        if (this.dataArray[i].no == no) {
+                            this.dataArray.splice(i, 1)
+                        }
+                    }
+                },
+                boardRead: function (info) {
+                    this.boardInfo = info;
+                    this.listOK = false;
+                    this.readOK = true;
+                    //글 조회 마다 카운트 증가
+                    for (let i in this.dataArray) {
+                        if (this.dataArray[i].no == info.no) {
+                            this.dataArray[i].view += 1; 
+                        }
+                    }
+                },
+                boardList: function () {
+                    this.listOK = true;
+                    this.readOK = false;
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>

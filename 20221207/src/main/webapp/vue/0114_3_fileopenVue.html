@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fileopen.html</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+<!-- 첨부파일로 json파일을 선택하면 읽어들이는거 할거임. vue로 -->
+
+<body>
+    <h2>json파일 읽기.</h2>
+    <input type="file" id="fileopen">
+    <div id="app">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>상품번호</th>
+                    <th>상품명</th>
+                    <th>상품가격</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="product in products">
+                    <td>{{product.id}}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <script>
+        let fileobj = document.getElementById('fileopen')
+        fileobj.onchange = function (e) {
+            let file = e.target.files[0];
+            console.log(file)
+            if (file) { //파일이 있으면
+                var reader = new FileReader(); //FileReader라는걸 사용해서 읽어들여서
+                reader.onload = function (ee) {
+                    let result = JSON.parse(ee.target.result) //json파싱
+                    console.log(result)
+
+                    console.log(vm.$data.products = result.products) //$data : data속성을 가져온다.
+                }
+                reader.readAsText(file); // 호출
+            }
+        }
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                products: []
+            }
+        })
+    </script>
+</body>
+
+</html>

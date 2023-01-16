@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js 애완용품 샵</title>
+    <script src="https://unpkg.com/vue@2"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/app.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- axios를 사용해서 json파일 읽어오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 방법1) 일반 데이터 사용
+                <label for="order_no">상품번호순(id순)
+                <input type="radio" id="order" v-bind:value="no" v-model="orderby">
+            </label>
+            <label for="">상품명순
+                <input type="radio" id="order" v-bind:value="name" v-model="orderby">
+            </label>
+            <label for="">상품가격순
+                <input type="radio" id="order" v-bind:value="price" v-model="orderby">
+            </label> 
+            -->
+        <!-- 방법2) 데이터 배열 사용 -->
+        <div align="center" v-for="orderCase in orderByCase">
+            <label v-bind:for="orderCase">{{orderCase}}순
+                <input type="radio" v-bind:id="orderCase" v-bind:value="orderCase" v-model="orderby">
+            </label>
+        </div>
+
+        <header>
+            <div class="navbar navbar-default">
+                <div class="navbar-header">
+                    <h1>{{sitename}}</h1>
+                </div>
+                <div class="nav navbar-nav navbar-right cart">
+                    <button class="btn btn-primary btn-lg" v-on:click="showCheckout">
+                        <span class="glyphicon glyphicon-shopping-cart">{{cartItemCount}}체크아웃</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div v-if=showProduct>
+                <!-- v-for시작부분 -->
+                <div v-for="product in products">
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-1">
+                            <figure>
+                                <img class="product" v-bind:src="product.image">
+                            </figure>
+                        </div>
+                        <div class="col-md-6 col-md-offset-2 description">
+                            <h1 v-text="product.title"></h1>
+                            <p v-html="product.description"></p>
+                            <p class="price">
+                                {{product.price | formatPrice}}
+                            </p>
+                            <!-- ↑ <p class="price" v-text="product.price"></p>랑 같음. 가격을 $20.00으로 나타내기 위해 포멧 사용-->
+                            <button class="btn btn-primary btn-lg" v-if="canAddToCart(product)"
+                                v-on:click="addToCart(product)">장바구니 담기</button>
+                            <button disabled="true" class="btn btn-primary btn-lg" v-else>장바구니 담기</button>
+                            <span class="inventory-message"
+                                v-if="product.availableInventory == cartCount(product.id)">품절</span>
+                            <span class="inventory-message"
+                                v-else-if="product.availableInventory - cartCount(product.id) < 4">
+                                {{product.availableInventory - cartCount(product.id)}}개 남았습니다.
+                            </span>
+                            <span class="inventory-message" v-else>지금 구매하세요</span>
+                            <!-- 별점 -->
+                            <div class="rating">
+                                <span v-bind:class="{'rating-active': checkRating(n, product.rating)}"
+                                    v-for="n in 5">☆</span>
+
+                            </div>
+
+                        </div>
+                    </div><!-- div.row -->
+                    <hr>
+                </div><!-- v-for 마지막부분 -->
+            </div><!-- v-if="showProduct" -->
+            <div v-else>
+                <!-- 체크아웃 화면의 시작 -->
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">애완용품샵 체크아웃</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <h4><strong>정보를 입력하세요</strong></h4>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <strong>이름:</strong>
+                                    <input v-model="order.firstName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <strong>성:</strong>
+                                    <input v-model="order.lastName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <strong>주소:</strong>
+                                    <input v-model="order.address" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <strong>도시:</strong>
+                                    <input v-model="order.city" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <strong>주:</strong>
+                                    <select v-model="order.state" class="form-control">
+                                        <option disabled>주</option>
+                                        <option v-for="(state, key) in state" v-bind:value="state">
+                                            {{key}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- 우편번호: .number쓰면 숫자만 적기 가능 -->
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <strong>우편번호:</strong>
+                                    <input v-model.number="order.zip" class="form-control">
+                                </div>
+                            </div>
+                            <!-- 선물 옵션 -->
+                            <div class="form-group">
+                                <div class="col-md-6 boxes">
+                                    <input type="checkbox" id="gift" value="true" v-bind:true-value="order.sendGift"
+                                        v-bind:false-value="order.dontSentGift" v-model="order.gift">
+                                    <label for="gift">선물로 보내기 여부:</label>
+                                </div>
+                            </div>
+                            <!-- 자택/직장 선택 -->
+                            <div class="form-group">
+                                <div class="col-md-6 boxes">
+                                    <input type="radio" id="home" v-bind:value="order.home" v-model="order.method">
+                                    <label for="home">자택</label>
+                                    <input type="radio" id="business" v-bind:value="order.business"
+                                        v-model="order.method">
+                                    <label for="business">직장</label>
+                                </div>
+                            </div>
+                            <!-- 제출 -->
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary submit"
+                                        v-on:click="submitForm">주문하기</button>
+                                </div>
+                            </div>
+
+                            <!-- 정보집계 -->
+                            <div class="col-md-12 verify">
+                                <pre>
+                                    이름: {{order.firstName}}
+                                    성: {{order.lastName}}
+                                    주소: {{order.address}}
+                                    도시: {{order.city}}
+                                    우편번호: {{order.zip}}
+                                    주: {{order.state}}
+                                    배송지: {{order.method}}
+                                    선물: {{order.gift}}
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 체크아웃 화면의 종료 -->
+            </div> <!-- div v-else -->
+        </main>
+    </div>
+
+    <script>
+        var APP_LOG_LIFECYCLE_EVENTS = false;
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                sitename: 'Vue.js 애완용품 샵',
+                /* product: { //객체타입
+                    id: 1001,
+                    title: '고양이 사료 25파운드',
+                    description: '당신의 고양이를 위한 <em>거부할 수 없는</em> 유기농 25파운드 사료입니다.', //<em> : 이탤릭체 태그
+                    price: 200000, // 2000 -> $20.00달러 이렇게 소수점까지 표시할거라 일단 네자리 다 적어줌
+                    image: 'assets/images/product-fullsize.png', //이미지 경로
+                    availableInventory: 5 //가용 재고
+                }, */
+                products: [], //axios로 json데이터를 가져와서 저장
+                cart: [], //여러개의 아이템을 담기위해 적어줌
+                showProduct: true,
+                state: {
+                    AL: '알라바마',
+                    AK: '알래스카',
+                    AR: '애리조나',
+                    CA: '캘리포니아',
+                    NV: '네바다'
+                },
+                order: {
+                    firstName: 'Erick',
+                    lastName: 'Han',
+                    address: '123.5 Center street.',
+                    city: 'San Francisco',
+                    zip: '94530',
+                    state: '캘리포니아',
+                    method: '자택 주소',
+                    business: '직장 주소',
+                    home: '자택 주소',
+                    gift: '선물로 보내기',
+                    sendGift: '선물로 보내기',
+                    dontSendGift: '선물로 보내지 않기'
+                },
+                orderby: 'no',
+                orderByCase: ['no', 'name', 'price']
+                // no: 'no',
+                // name: 'name',
+                // price: 'price'
+
+            },
+            watch: {
+                orderby: function (newValue, oldValue) {
+                    var orderByFunc = function (first, second) { //가격순
+                        return first.price - second.price;
+                    }
+                    if (newValue == 'no') {
+                        orderByFunc = function (first, second) { //상품아이디순
+                            return first.id - second.id;
+                        }
+                    } else if (newValue == 'name') {
+                        orderByFunc = function (first, second) { //상품명순
+                            return first.title < second.title ? -1 : 1;
+                        }
+                    }
+                    this.products.sort(orderByFunc); //sort함수 호출
+                }
+            },
+            methods: {
+                addToCart: function (aProduct) {
+                    this.cart.push(aProduct.id); //cart배열에 상품id 추가하기
+                },
+                showCheckout: function () {
+                    this.showProduct = this.showProduct ? false : true;
+                },
+                submitForm: function () {
+                    alert('제출완료!')
+                },
+                canAddToCart: function (aProduct) {
+                    return aProduct.availableInventory > this.cartCount(aProduct.id);
+                },
+                cartCount: function (id) { //상품마다 가용 재고가 다르기때문에 설정해줘야 한다. 
+                    var count = 0;
+                    for (let i = 0; i < this.cart.length; i++) {
+                        if (this.cart[i] == id) {
+                            count++;
+                        }
+                    }
+                    return count;
+                },
+                checkRating: function (n, rating) {
+                    return rating >= n; //rating 값 만큼 true
+                },
+                sortId: function () {
+                    console.log('ggg')
+                    products.sort(function (first, last) {
+                        return first.id < last.id ? -1 : 0;
+                    })
+                }
+            },
+            computed: {
+                cartItemCount: function () {
+                    return this.cart.length ? this.cart.length : 0 //삼항연산자. 카트에 상품이 있으면 배열길이 표시, 없으면 0 표시
+                }
+            },
+            filters: {
+                formatPrice: function (price) {
+                    //$20.00 -> $23,456.00 이런 식으로 세자리마다 콤마넣고 소숫점 2자리까지
+                    if (price > 99999) { //$999.99
+                        var priceStr = (price / 100).toFixed(2);
+                        var priceAry = priceStr.split('').reverse(); //구분자를 기준으로 잘라서 배열로 만들고 역순으로 정렬
+                        console.log(priceAry);
+                        var index = 3; //2,000.00 끝에 .00이 3자리니까 
+                        //while반복문
+                        while (priceAry.length > index + 3) { //3+3보다 크다면 
+                            priceAry.splice(index + 3, 0, ','); //그 위치에 콤마를 적을 것이다
+                            index += 4; //2,000,000.00 처럼 자리수가 4개씩(콤마포함) 늘어날때마다 콤마를 찍기 위함
+                        }
+                        return '$' + priceAry.reverse().join('');
+                    } else {
+                        return '$' + (price / 100).toFixed(2);
+                    }
+                }
+            },
+            beforeCreate: function () {
+                if (APP_LOG_LIFECYCLE_EVENTS) {
+                    console.log("beforeCreate");
+                }
+            },
+            created: function () {
+                if (APP_LOG_LIFECYCLE_EVENTS) {
+                    console.log("created");
+                }
+                //axios
+                axios.get('./products.json')
+                    .then(result => {
+                        console.log(result.data.products)
+                        this.products = result.data.products
+                    })
+            },
+            beforeMount: function () {
+                if (APP_LOG_LIFECYCLE_EVENTS) {
+                    console.log("beforeMount");
+                }
+            },
+            mounted: function () {
+                if (APP_LOG_LIFECYCLE_EVENTS) {
+                    console.log("mounted");
+                }
+            },
+            //update: 데이터가 바뀔때 실행됨(dom을 리프레시)
+            beforeUpdate: function () {
+                if (APP_LOG_LIFECYCLE_EVENTS) {
+                    console.log("beforeUpdate");
+                }
+            },
+            updated: function () {
+                if (APP_LOG_LIFECYCLE_EVENTS) {
+                    console.log("updated");
+                }
+            },
+            //destroy: 얘가 호출되면 이후에 변경한거는 적용이 안된다. 죽어버림
+            beforeDestroy: function () {
+                if (APP_LOG_LIFECYCLE_EVENTS) {
+                    console.log("beforeDestroy ");
+                }
+            },
+            destroyed: function () {
+                if (APP_LOG_LIFECYCLE_EVENTS) {
+                    console.log("destroyed");
+                }
+            }
+        })
+
+        // vm.sitename = '새로운 사이투';
+        // vm.$destroy();
+        // vm.sitename = '새로운 사이투sds';
+    </script>
+</body>
+
+</html>
