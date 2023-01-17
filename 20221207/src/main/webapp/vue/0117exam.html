@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>230117시험</title>
+    <script src="https://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+    <div id="app">
+        <member-add v-if="addOK" v-bind:add-form="addForm"></member-add>
+        <member-list v-if="listOK" v-bind:list-form="listForm" v-bind="memberInfo"></member-list>
+        <member-modify v-if="modifyOK" v-bind:modify-form="modifyForm"></member-modify>
+    </div>
+
+    <script>
+        const memberAry = [];
+
+        //회원가입
+        const memberAdd = {
+            template: `
+        <div id="memberAdd">
+            <h2>회 원 가 입</h2>
+            <table>
+                <tr>
+                    <td>{{idLabel}}</td>
+                    <td><input type="text" v-model="mId"></td>
+                </tr>
+                <tr>
+                    <td>{{nameLabel}}</td>
+                    <td><input type="text" v-model="mName"></td>
+                </tr>
+                <tr>
+                    <td>{{pwdLabel}}</td>
+                    <td><input type="password" v-model="mPwd"></td>
+                </tr>
+                <tr>
+                    <td>{{pwdChkLabel}}</td>
+                    <td><input type="password" v-model="mPwdChk"></td>
+                </tr>
+                <tr>
+                    <td>{{ageLabel}}</td>
+                    <td><input type="number" v-model="mAge"></td>
+                </tr>
+                <tr>
+                    <td>{{addrLabel}}</td>
+                    <td><input type="text" v-model="mAddr"></td>
+                </tr>
+                <tr>
+                    <td>{{telLabel}}</td>
+                    <td><input type="text" v-model="mTel"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button v-on:click="memberSave">회원저장</button>
+                        <button v-on:click="listFormChild">목록보기</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+            `,
+            data: function () {
+                return {
+                    //라벨
+                    idLabel: '아이디',
+                    nameLabel: '이름',
+                    pwdLabel: '비밀번호',
+                    pwdChkLabel: '비밀번호확인',
+                    ageLabel: '나이',
+                    addrLabel: '주소',
+                    telLabel: '연락처',
+
+                    //입력
+                    mId: 'user1',
+                    mName: '홍길동',
+                    mPwd: '1234',
+                    mPwdChk: '1234',
+                    mAge: '17',
+                    mAddr: '대구 중구 100번지',
+                    mTel: '010-1234-1234'
+                }
+            },
+            methods: {
+                //회원저장
+                memberSave: function () {
+                    console.log(this.mId)
+                    memberAry.push({
+                        id: this.mId,
+                        name: this.mName,
+                        password: this.mPwd,
+                        passwordChk: this.mPwdChk,
+                        age: this.mAge,
+                        address: this.mAddr,
+                        tel: this.mTel
+                    })
+                    console.log(memberAry)
+                },
+                //목록보기
+                listFormChild: function(info){
+                    this.$emit('list-form', info)
+                }
+            }
+        }
+
+        //목록화면
+        const memberList = {
+            template: `
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>회원아이디</th>
+                        <th>이름</th>
+                        <th>나이</th>
+                        <th>주소</th>
+                        <th>연락처</th>
+                        <th>수정</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="member in members">
+                        <td>{{member.id}}</td>
+                        <td>{{member.name}}</td>
+                        <td>{{member.age}}</td>
+                        <td>{{member.address}}</td>
+                        <td>{{member.tel}}</td>
+                        <td><button v-on:click="modifyFormChild">수정</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button v-on:click="addFormChild">회원가입화면이동</button>
+        </div>
+            `,
+            data: function () {
+                return {
+                    members: memberAry
+                }
+            },
+            methods: {
+                //수정하기
+                modifyFormChild: function(info){
+                    this.$emit('modify-form')
+                },
+                //회원가입화면이동
+                addFormChild: function(){
+                    this.$emit('add-form')
+                }
+            }
+        }
+
+        //수정화면
+        const memberModify = {
+            template: `
+        <div id="memberModify">
+            <table>
+                <tr>
+                    <td>{{idLabel}}</td>
+                    <td><input type="text" v-model="mId"></td>
+                </tr>
+                <tr>
+                    <td>{{nameLabel}}</td>
+                    <td><input type="text" v-model="mName"></td>
+                </tr>
+                <tr>
+                    <td>{{pwdLabel}}</td>
+                    <td><input type="password" v-model="mPwd"></td>
+                </tr>
+                <tr>
+                    <td>{{pwdChkLabel}}</td>
+                    <td><input type="password" v-model="mPwdChk"></td>
+                </tr>
+                <tr>
+                    <td>{{ageLabel}}</td>
+                    <td><input type="number" v-model="mAge"></td>
+                </tr>
+                <tr>
+                    <td>{{addrLabel}}</td>
+                    <td><input type="text" v-model="mAddr"></td>
+                </tr>
+                <tr>
+                    <td>{{telLabel}}</td>
+                    <td><input type="text" v-model="mTel"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button v-on:click="modifySaveChild">수정</button>
+                        <button v-on:click="listFormChild">목록보기</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+            `,
+            data: function () {
+                return {
+                    //라벨
+                    idLabel: '아이디',
+                    nameLabel: '이름',
+                    pwdLabel: '비밀번호',
+                    pwdChkLabel: '비밀번호확인',
+                    ageLabel: '나이',
+                    addrLabel: '주소',
+                    telLabel: '연락처',
+
+                    //입력
+                    mId: 'user1',
+                    mName: '김길동',
+                    mPwd: '1234',
+                    mPwdChk: '1234',
+                    mAge: '18',
+                    mAddr: '대구 중구 200번지',
+                    mTel: '010-1234-1234'
+                }
+            },
+            methods: {
+                //수정하기
+                modifySaveChild: function(info){
+                    this.$emit('modify-form', this.mName, this.password, this.passwordChk, this.age, this.address, this.tel)
+                    console.log(this)
+                    console.log(this.mPwd)
+                    console.log(memberAry)
+                },
+                //목록보기
+                listFormChild: function(){
+                    this.$emit('list-form')
+                },
+            }
+        }
+        //루트 컴포넌트
+        new Vue({
+            el: '#app',
+            components: {
+                'member-add': memberAdd,
+                'member-list': memberList,
+                'member-modify' : memberModify
+            },
+            data: {
+                members: memberAry,
+                memberInfo:{},
+                addOK: true,
+                listOK: true,
+                modifyOK: true
+            },
+            methods: {
+                addForm: function(){
+                    this.addOK = true;
+                    this.listOK = false;
+                    this.modifyOK = false;
+                },
+                listForm: function(info){
+                    this.memberInfo = info;
+                    this.addOK = false;
+                    this.listOK = true;
+                    this.modifyOK = false;
+                },
+                modifyForm: function(name, password, passwordChk, age, address, tel){
+                    let memberInfo = {
+                        name: name,
+                        password: password,
+                        passwordChk: passwordChk,
+                        age:age,
+                        address:address,
+                        tel:tel
+                    }
+                    this.memberAry.push(memberInfo)
+
+                    this.addOK = false;
+                    this.listOK = false;
+                    this.modifyOK = true;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
